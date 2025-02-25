@@ -38,6 +38,36 @@ function renderer(graph, settings) {
 
     attr = defaults.DEFAULT_EDGE_REDUCER(settings, edge, attr);
 
+    var sourceNode = nodeData[source];
+    var targetNode = nodeData[target];
+
+    // Drawing arrows if the graph is directed
+    if (graph.type === 'directed') {
+      var dx = targetNode.x - sourceNode.x;
+      var dy = targetNode.y - sourceNode.y;
+      var length = Math.sqrt(dx * dx + dy * dy);
+      var unitDx = dx / length;
+      var unitDy = dy / length;
+
+      var arrowSize = targetNode.size;
+      var arrowWidth = arrowSize / 2;
+
+      var arrowTipX = targetNode.x - unitDx * targetNode.size;
+      var arrowTipY = targetNode.y - unitDy * targetNode.size;
+
+      var arrowPoints = [
+        { x: arrowTipX, y: arrowTipY },
+        { x: arrowTipX - arrowSize * unitDx + arrowWidth * unitDy, y: arrowTipY - arrowSize * unitDy - arrowWidth * unitDx },
+        { x: arrowTipX - arrowSize * unitDx - arrowWidth * unitDy, y: arrowTipY - arrowSize * unitDy + arrowWidth * unitDx }
+      ];
+
+      edgesStrings.push(
+        '<polygon points="' +
+        arrowPoints.map(p => `${p.x},${p.y}`).join(' ') +
+        `" fill="${attr.color}" />`
+      );
+    }
+
     edgesStrings.push(
       components.edges[attr.type](
         settings,
@@ -49,7 +79,6 @@ function renderer(graph, settings) {
   });
 
   // Drawing nodes and labels
-  // TODO: should we draw in size order to avoid weird overlaps? Should we run noverlap?
   var nodesStrings = [];
   var nodeLabelsStrings = [];
   var k;

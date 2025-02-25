@@ -1,7 +1,7 @@
 {
-  "name": "graphology-svg",
-  "version": "0.1.3",
-  "description": "SVG rendering routines for graphology.",
+  "name": "graphology-svg-enhanced",
+  "version": "0.1.5",
+  "description": "SVG rendering routines for graphology. This is a fork of the original graphology-svg package.",
   "main": "index.js",
   "files": [
     "components",
@@ -37,5 +37,9 @@
   "homepage": "https://github.com/graphology/graphology#readme",
   "dependencies": {
     "graphology-utils": "^2.3.0"
+  },
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.1.0"
   }
 }
